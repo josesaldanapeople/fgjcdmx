@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Unidad de Atención Inmediata</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .header h1 {
+            font-weight: 300;
+            font-size: 1.8rem;
+        }
+        
+        .form-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+        
+        .required-field::after {
+            content: " *";
+            color: var(--accent-color);
+        }
+        
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 4px;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #ddd;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .example-text {
+            font-size: 0.85rem;
+            color: #6c757d;
+            font-style: italic;
+        }
+        
+        .form-section {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: var(--light-bg);
+            border-radius: 6px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1>REGISTRO UNIDAD DE ATENCIÓN INMEDIATA</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-container">
+            <form>
+                <h2 class="form-title">Información del registro</h2>
+                
+                <!-- Sección 1: Información básica -->
+                <div class="form-section">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="fechaAtencion" class="form-label required-field">1. FECHA DE ATENCIÓN</label>
+                            <input type="date" class="form-control" id="fechaAtencion" required>
+                            <div class="example-text">Ejemplo: 7 de enero de 2019</div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label class="form-label required-field">2. PERSONA RESPONSABLE DE REGISTRO</label>
+                            <p><small>Marca solo una opción</small></p>
+                            <div class="radio-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="responsable" id="responsable1" value="MARTHA RAQUEL LOPEZ BALDERA" required>
+                                    <label class="form-check-label" for="responsable1">MARTHA RAQUEL LOPEZ BALDERA</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="responsable" id="responsable2" value="GUADALUPE ARELLANO JIMENEZ">
+                                    <label class="form-check-label" for="responsable2">GUADALUPE ARELLANO JIMENEZ</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="responsable" id="responsable3" value="BLANCA LUCERO GARCIA DIAZ">
+                                    <label class="form-check-label" for="responsable3">BLANCA LUCERO GARCIA DIAZ</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="responsable" id="responsable4" value="JUANA FLORES HERNANDEZ">
+                                    <label class="form-check-label" for="responsable4">JUANA FLORES HERNANDEZ</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="responsable" id="responsable5" value="ALICIA CRUZ GARCIA">
+                                    <label class="form-check-label" for="responsable5">ALICIA CRUZ GARCIA</label>
+                                </div>
+                                <!-- Más opciones de responsables -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="contrasena" class="form-label required-field">3. CONTRASEÑA</label>
+                            <input type="password" class="form-control" id="contrasena" required>
+                            <div class="example-text">Coloca la contraseña individual que se te proporcionó</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sección 2: Información del caso -->
+                <div class="form-section">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="nombreQuejoso" class="form-label required-field">4. NOMBRE DEL QUEJOSO</label>
+                            <input type="text" class="form-control text-uppercase" id="nombreQuejoso" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="funcionarioInvolucrado" class="form-label required-field">5. FUNCIONARIO PÚBLICO INVOLUCRADO</label>
+                            <input type="text" class="form-control" id="funcionarioInvolucrado" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label class="form-label required-field">6. CONDUCTA (LINEAMIENTOS)</label>
+                            <p><small>Marca solo una opción</small></p>
+                            <div class="radio-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="conducta" id="conducta1" value="TEMAS PRIORITARIOS" required>
+                                    <label class="form-check-label" for="conducta1">TEMAS PRIORITARIOS</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="conducta" id="conducta2" value="MALTRATO INSTITUCIONAL">
+                                    <label class="form-check-label" for="conducta2">MALTRATO INSTITUCIONAL</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="conducta" id="conducta3" value="EJERCICIO INDEBIDO DE FUNCIONES">
+                                    <label class="form-check-label" for="conducta3">EJERCICIO INDEBIDO DE FUNCIONES</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="conducta" id="conducta4" value="FILTRACIÓN DE INFORMACIÓN">
+                                    <label class="form-check-label" for="conducta4">FILTRACIÓN DE INFORMACIÓN</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="conducta" id="conducta5" value="HECHOS POSIBLEMENTE CONSTITUTIVOS DE DELITOS DE CORRUPCIÓN">
+                                    <label class="form-check-label" for="conducta5">HECHOS POSIBLEMENTE CONSTITUTIVOS DE DELITOS DE CORRUPCIÓN</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="conducta" id="conducta6" value="OTROS">
+                                    <label class="form-check-label" for="conducta6">OTROS</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label for="conductaReportada" class="form-label required-field">7. CONDUCTA REPORTADA</label>
+                            <textarea class="form-control" id="conductaReportada" rows="3" required></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sección 3: Información adicional -->
+                <div class="form-section">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="folioAtencion" class="form-label required-field">8. FOLIO DE ATENCIÓN INMEDIATA</label>
+                            <input type="text" class="form-control" id="folioAtencion" required>
+                            <div class="example-text">SOLO EN CASO DE NO CONTAR CON FOLIO COLOCAR "NA"</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="carpetaInvestigacion" class="form-label required-field">9. CARPETA DE INVESTIGACIÓN</label>
+                            <input type="text" class="form-control" id="carpetaInvestigacion" required>
+                            <div class="example-text">EN CASO DE NO APLICAR COLOCAR "NA"</div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label class="form-label required-field">10. CANAL DE LLEGADA</label>
+                            <p><small>Marca solo una opción</small></p>
+                            <div class="radio-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="canal" id="canal1" value="PRESENCIAL" required>
+                                    <label class="form-check-label" for="canal1">PRESENCIAL</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="canal" id="canal2" value="TELEFONO PARTICULAR">
+                                    <label class="form-check-label" for="canal2">TELÉFONO PARTICULAR</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="canal" id="canal3" value="TELEFONO ROJO">
+                                    <label class="form-check-label" for="canal3">TELÉFONO ROJO</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="canal" id="canal4" value="REDES SOCIALES">
+                                    <label class="form-check-label" for="canal4">REDES SOCIALES</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="canal" id="canal5" value="CORREO ELECTRONICO UAI">
+                                    <label class="form-check-label" for="canal5">CORREO ELECTRÓNICO UAI</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="canal" id="canal6" value="OFICIO">
+                                    <label class="form-check-label" for="canal6">OFICIO</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label required-field">11. ¿ES REINCIDENTE EL FUNCIONARIO PÚBLICO?</label>
+                            <div class="radio-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="reincidenteFuncionario" id="reincidenteFuncionarioSi" value="Sí" required>
+                                    <label class="form-check-label" for="reincidenteFuncionarioSi">Sí</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="reincidenteFuncionario" id="reincidenteFuncionarioNo" value="No">
+                                    <label class="form-check-label" for="reincidenteFuncionarioNo">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label required-field">12. ¿ES REINCIDENTE EL QUEJOSO?</label>
+                            <div class="radio-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="reincidenteQuejoso" id="reincidenteQuejosoSi" value="Sí" required>
+                                    <label class="form-check-label" for="reincidenteQuejosoSi">Sí</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="reincidenteQuejoso" id="reincidenteQuejosoNo" value="No">
+                                    <label class="form-check-label" for="reincidenteQuejosoNo">No</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sección 4: Información jurídica -->
+                <div class="form-section">
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label class="form-label required-field">13. PROCEDENCIA JURÍDICA</label>
+                            <p><small>Seleccione solo una opción</small></p>
+                            <select class="form-select" id="procedencia_juridica" name="procedencia">
+  <option value="">--Seleccione--</option>
+  <option value="manzana">NO APLICA</option>
+  <option value="FDMC">FDMC</option>
+<option value="FDSP">FDSP</option>
+<option value="FIEDF">FIEDF</option>
+<option value="FIEDH">FIEDH</option>
+<option value="FIEC">FIEC</option>
+<option value="FIDRVT">FIDRVT</option>
+<option value="FIEAE">FIEAE</option>
+<option value="FIDAMPU">FIDAMPU</option>
+<option value="FPJC">FPJC</option>
+<option value="CAMPAF">CAMPAF</option>
+<option value="DC">DC</option>
+<option value="DPSP">DPSP</option>
+<option value="FAEO">FAEO</option>
+<option value="FAEN">FAEN</option>
+<option value="FAES">FAES</option>
+<option value="FAEJR">FAEJR</option>
+<option value="FEED">FEED</option>
+<option value="FEP">FEP</option>
+<option value="DGAP">DGAP</option>
+<option value="DGSSOJ">DGSSOJ</option>
+<option value="DIV">DIV</option>
+<option value="CEA">CEA</option>
+<option value="DPIAV">DPIAV</option>
+<option value="DAJP">DAJP</option>
+<option value="DEAIV">DEAIV</option>
+<option value="DCAIV">DCAIV</option>
+<option value="DCAIVDCRG">DCAIVDCRG</option>
+<option value="UAI">UAI</option>
+<option value="CGA">CGA</option>
+<option value="CGI">CGI</option>
+<option value="CGJDH">CGJDH</option>
+<option value="FIDS">FIDS</option>
+<option value="FJPA">FJPA</option>
+<option value="FIPDMDFP">FIPDMDFP</option>
+<option value="FIDVF">FIDVF</option>
+<option value="FIDCAGAP">FIDCAGAP</option>
+<option value="FIDCANNA">FIDCANNA</option>
+<option value="FIDF">FIDF</option>
+<option value="FIDMTP">FIDMTP</option>
+<option value="OPC">OPC</option>
+<option value="CGIFSP">CGIFSP</option>
+<option value="DEMI">DEMI</option>
+<option value="DSC">DSC</option>
+<option value="DAPFE">DAPFE</option>
+<option value="DBAPV">DBAPV</option>
+<option value="DPS">DPS</option>
+<option value="FIAR">FIAR</option>
+<option value="FIDN">FIDN</option>
+<option value="FIS">FIS</option>
+<option value="COY-1">COY-1</option>
+<option value="COY-2">COY-2</option>
+<option value="COY-3">COY-3</option>
+<option value="COY-4">COY-4</option>
+<option value="COY-5">COY-5</option>
+<option value="CUH-1">CUH-1</option>
+<option value="CUH-2">CUH-2</option>
+<option value="CUH-3">CUH-3</option>
+<option value="CUH-4">CUH-4</option>
+<option value="CUH-5">CUH-5</option>
+<option value="CUH-6">CUH-6</option>
+<option value="CUH-7">CUH-7</option>
+<option value="CUH-8">CUH-8</option>
+<option value="BJ-1">BJ-1</option>
+<option value="BJ-2">BJ-2</option>
+<option value="BJ-3">BJ-3</option>
+<option value="BJ-4">BJ-4</option>
+<option value="BJ-5">BJ-5</option>
+<option value="XOCH-1">XOCH-1</option>
+<option value="XOCH-2">XOCH-2</option>
+<option value="CUAJ-1">CUAJ-1</option>
+<option value="CUAJ-2">CUAJ-2</option>
+<option value="GAM-1">GAM-1</option>
+<option value="GAM-2">GAM-2</option>
+<option value="GAM-3">GAM-3</option>
+<option value="GAM-4">GAM-4</option>
+<option value="GAM-5">GAM-5</option>
+<option value="GAM-6">GAM-6</option>
+<option value="GAM-7">GAM-7</option>
+<option value="GAM-8">GAM-8</option>
+<option value="GAM-9">GAM-9</option>
+<option value="TLP-1">TLP-1</option>
+<option value="TLP-2">TLP-2</option>
+<option value="TLP-3">TLP-3</option>
+<option value="TLP-4">TLP-4</option>
+<option value="IZC-1">IZC-1</option>
+<option value="IZC-2">IZC-2</option>
+<option value="IZC-3">IZC-3</option>
+<option value="MIL-1">MIL-1</option>
+<option value="MIL-2">MIL-2</option>
+<option value="MH-1">MH-1</option>
+<option value="MH-2">MH-2</option>
+<option value="MH-3">MH-3</option>
+<option value="MH-4">MH-4</option>
+<option value="MH-5">MH-5</option>
+<option value="AZC-1">AZC-1</option>
+<option value="AZC-2">AZC-2</option>
+<option value="AZC-3">AZC-3</option>
+<option value="AZC-4">AZC-4</option>
+<option value="AO-1">AO-1</option>
+<option value="AO-2">AO-2</option>
+<option value="AO-3">AO-3</option>
+<option value="AO-4">AO-4</option>
+<option value="IZP-1">IZP-1</option>
+<option value="IZP-2">IZP-2</option>
+<option value="IZP-3">IZP-3</option>
+<option value="IZP-4">IZP-4</option>
+<option value="IZP-5">IZP-5</option>
+<option value="IZP-6">IZP-6</option>
+<option value="IZP-7">IZP-7</option>
+<option value="IZP-8">IZP-8</option>
+<option value="IZP-9">IZP-9</option>
+<option value="VC-A">VC-A</option>
+<option value="VC-2">VC-2</option>
+<option value="VC-3">VC-3</option>
+<option value="VC-4">VC-4</option>
+<option value="VC-5">VC-5</option>
+<option value="TLH-1">TLH-1</option>
+<option value="TLH-2">TLH-2</option>
+<option value="CGAFGJCDMX">CGAFGJCDMX</option>
+<option value="FEADE">FEADE</option>
+  
+</select>
+
+
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label for="asunto" class="form-label required-field">14. ASUNTO</label>
+                            <textarea class="form-control" id="asunto" rows="4" required></textarea>
+                            <div class="example-text">PEGAR DE WORD EL ASUNTO</div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label required-field">15. CLASIFICACIÓN</label>
+                            <div class="radio-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="clasificacion" id="clasificacion1" value="REPORTE (FOLIO DE ATENCIÓN TEMPRANA)" required>
+                                    <label class="form-check-label" for="clasificacion1">REPORTE (FOLIO DE ATENCIÓN TEMPRANA)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="clasificacion" id="clasificacion2" value="ORIENTACIÓN">
+                                    <label class="form-check-label" for="clasificacion2">ORIENTACIÓN</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="clasificacion" id="clasificacion3" value="COMENTARIO">
+                                    <label class="form-check-label" for="clasificacion3">COMENTARIO</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="clasificacion" id="clasificacion4" value="REPORTE CON RESPUESTA INMEDIATA">
+                                    <label class="form-check-label" for="clasificacion4">REPORTE CON RESPUESTA INMEDIATA</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">16. TIPO DE DETERMINACIÓN</label>
+                            <div class="radio-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="determinacion" id="determinacion1" value="IMPROCEDENTE SIN RECOMENDACIÓN">
+                                    <label class="form-check-label" for="determinacion1">IMPROCEDENTE SIN RECOMENDACIÓN</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="determinacion" id="determinacion2" value="PROCEDENTE CON RECOMENDACIÓN">
+                                    <label class="form-check-label" for="determinacion2">PROCEDENTE CON RECOMENDACIÓN</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <button type="reset" class="btn btn-secondary me-md-2">Limpiar formulario</button>
+                    <button type="submit" class="btn btn-primary">Enviar registro</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Convertir automáticamente a mayúsculas el nombre del quejoso
+        document.getElementById('nombreQuejoso').addEventListener('input', function() {
+            this.value = this.value.toUpperCase();
+        });
+        
+        // Validación personalizada para campos que deben ser "NA" si no aplican
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const nombreQuejoso = document.getElementById('nombreQuejoso').value.trim();
+            const folioAtencion = document.getElementById('folioAtencion').value.trim();
+            const carpetaInvestigacion = document.getElementById('carpetaInvestigacion').value.trim();
+            
+            // Validar que si el campo está vacío, se coloque "NA"
+            if(folioAtencion === '') {
+                document.getElementById('folioAtencion').value = 'NA';
+            }
+            
+            if(carpetaInvestigacion === '') {
+                document.getElementById('carpetaInvestigacion').value = 'NA';
+            }
+        });
+    </script>
+</body>
+</html>

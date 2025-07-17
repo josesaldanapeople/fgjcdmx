@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Estadísticas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .header h1 {
+            font-weight: 300;
+            font-size: 1.8rem;
+        }
+        
+        .dashboard-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 2rem;
+        }
+        
+        .stats-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .stats-card h3 {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stats-card .value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+        
+        .stats-card .description {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .data-table {
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+        
+        .data-table th {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        .data-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background-color: var(--light-bg);
+        }
+		
+		.consultar-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .consultar-btn:hover {
+            background-color: #1a252f;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 1rem;
+            }
+            
+            .chart-container {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1>DASHBOARD DE ESTADÍSTICAS</h1>
+                    <p>Visualización de datos de formularios</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="dashboard-container">
+		
+		<div class="row">
+                <div class="col-12 text-center">
+		  
+		  <button class="consultar-btn" onclick="window.location.href='administrador.html'">
+                    <i class="fas fa-search me-1"></i> Consultar Información
+                </button>
+		  </div>
+		 </div> 
+            <h2 class="section-title">Resumen General</h2>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="stats-card">
+                        <h3>Total de Registros</h3>
+                        <div class="value">1,248</div>
+                        <div class="description">Formularios completados</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stats-card">
+                        <h3>Investigaciones Activas</h3>
+                        <div class="value">342</div>
+                        <div class="description">En estado "TRÁMITE"</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stats-card">
+                        <h3>Documentos Externos</h3>
+                        <div class="value">876</div>
+                        <div class="description">Registrados en Oficialía</div>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 class="section-title mt-5">Estadísticas de Investigaciones</h2>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="chart-container">
+                        <canvas id="agenciaChart"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="chart-container">
+                        <canvas id="conductaChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="chart-container">
+                        <canvas id="estatusChart"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="chart-container">
+                        <canvas id="determinacionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 class="section-title mt-5">Documentación Externa</h2>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="chart-container">
+                        <canvas id="tipoDocumentoChart"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="chart-container">
+                        <canvas id="responsableChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 class="section-title mt-5">Registros de Usuarios</h2>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="chart-container">
+                        <canvas id="generoChart"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="chart-container">
+                        <canvas id="preferenciasChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 class="section-title mt-5">Datos Recientes</h2>
+            
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Tipo</th>
+                            <th>Descripción</th>
+                            <th>Estatus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2023-10-15</td>
+                            <td>Investigación</td>
+                            <td>ASEGURAMIENTO DE INMUEBLES</td>
+                            <td>TRÁMITE</td>
+                        </tr>
+                        <tr>
+                            <td>2023-10-14</td>
+                            <td>Documento</td>
+                            <td>AMPARO</td>
+                            <td>REGISTRADO</td>
+                        </tr>
+                        <tr>
+                            <td>2023-10-14</td>
+                            <td>Usuario</td>
+                            <td>Nuevo registro</td>
+                            <td>ACTIVO</td>
+                        </tr>
+                        <tr>
+                            <td>2023-10-13</td>
+                            <td>Investigación</td>
+                            <td>MALTRATO INSTITUCIONAL</td>
+                            <td>DETERMINADA</td>
+                        </tr>
+                        <tr>
+                            <td>2023-10-12</td>
+                            <td>Documento</td>
+                            <td>SOLICITUDES DE TRANSPARENCIA</td>
+                            <td>PROCESADO</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Gráfico de agencias de investigación
+        const agenciaCtx = document.getElementById('agenciaChart').getContext('2d');
+        const agenciaChart = new Chart(agenciaCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Género', 'Rezago', 'Sustanciación', 'Mesa 1 y 4', 'Mesa 2 y 3'],
+                datasets: [{
+                    label: 'Casos por Agencia',
+                    data: [156, 278, 192, 134, 88],
+                    backgroundColor: [
+                        'rgba(52, 152, 219, 0.7)',
+                        'rgba(155, 89, 182, 0.7)',
+                        'rgba(26, 188, 156, 0.7)',
+                        'rgba(241, 196, 15, 0.7)',
+                        'rgba(230, 126, 34, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(52, 152, 219, 1)',
+                        'rgba(155, 89, 182, 1)',
+                        'rgba(26, 188, 156, 1)',
+                        'rgba(241, 196, 15, 1)',
+                        'rgba(230, 126, 34, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Distribución de Casos por Agencia',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Número de Casos'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Gráfico de conductas reportadas
+        const conductaCtx = document.getElementById('conductaChart').getContext('2d');
+        const conductaChart = new Chart(conductaCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Aseguramiento Inmuebles', 'Aseguramiento Vehículos', 'Maltrato Institucional', 'Otros'],
+                datasets: [{
+                    data: [245, 187, 312, 104],
+                    backgroundColor: [
+                        'rgba(52, 152, 219, 0.7)',
+                        'rgba(155, 89, 182, 0.7)',
+                        'rgba(231, 76, 60, 0.7)',
+                        'rgba(46, 204, 113, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(52, 152, 219, 1)',
+                        'rgba(155, 89, 182, 1)',
+                        'rgba(231, 76, 60, 1)',
+                        'rgba(46, 204, 113, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Conductas Reportadas',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            }
+        });
+        
+        // Gráfico de estatus de investigación
+        const estatusCtx = document.getElementById('estatusChart').getContext('2d');
+        const estatusChart = new Chart(estatusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['En Trámite', 'Determinadas'],
+                datasets: [{
+                    data: [342, 158],
+                    backgroundColor: [
+                        'rgba(52, 152, 219, 0.7)',
+                        'rgba(46, 204, 113, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(52, 152, 219, 1)',
+                        'rgba(46, 204, 113, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Estatus de Investigaciones',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            }
+        });
+        
+        // Gráfico de determinaciones
+        const determinacionCtx = document.getElementById('determinacionChart').getContext('2d');
+        const determinacionChart = new Chart(determinacionCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Improcedente', 'Procedente con Recomendación', 'NA'],
+                datasets: [{
+                    label: 'Determinaciones',
+                    data: [87, 65, 6],
+                    backgroundColor: [
+                        'rgba(231, 76, 60, 0.7)',
+                        'rgba(46, 204, 113, 0.7)',
+                        'rgba(149, 165, 166, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(231, 76, 60, 1)',
+                        'rgba(46, 204, 113, 1)',
+                        'rgba(149, 165, 166, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Determinaciones de Investigaciones',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Número de Casos'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Gráfico de tipos de documento
+        const tipoDocumentoCtx = document.getElementById('tipoDocumentoChart').getContext('2d');
+        const tipoDocumentoChart = new Chart(tipoDocumentoCtx, {
+            type: 'polarArea',
+            data: {
+                labels: ['Amparo', 'JUD', 'Monitoreo', 'Operativo', 'Cateo', 'Seguimiento', 'Transparencia', 'Cursos', 'Acuerdo', 'Investigación', 'Otros'],
+                datasets: [{
+                    data: [215, 178, 92, 76, 54, 87, 65, 32, 41, 28, 8],
+                    backgroundColor: [
+                        'rgba(52, 152, 219, 0.7)',
+                        'rgba(155, 89, 182, 0.7)',
+                        'rgba(26, 188, 156, 0.7)',
+                        'rgba(241, 196, 15, 0.7)',
+                        'rgba(230, 126, 34, 0.7)',
+                        'rgba(231, 76, 60, 0.7)',
+                        'rgba(46, 204, 113, 0.7)',
+                        'rgba(149, 165, 166, 0.7)',
+                        'rgba(142, 68, 173, 0.7)',
+                        'rgba(41, 128, 185, 0.7)',
+                        'rgba(39, 174, 96, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(52, 152, 219, 1)',
+                        'rgba(155, 89, 182, 1)',
+                        'rgba(26, 188, 156, 1)',
+                        'rgba(241, 196, 15, 1)',
+                        'rgba(230, 126, 34, 1)',
+                        'rgba(231, 76, 60, 1)',
+                        'rgba(46, 204, 113, 1)',
+                        'rgba(149, 165, 166, 1)',
+                        'rgba(142, 68, 173, 1)',
+                        'rgba(41, 128, 185, 1)',
+                        'rgba(39, 174, 96, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Tipos de Documentos Registrados',
+                        font: {
+                            size: 16
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Gráfico de responsables
+        const responsableCtx = document.getElementById('responsableChart').getContext('2d');
+        const responsableChart = new Chart(responsableCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Guadalupe López', 'José Luis Correa', 'Edgar Pérez', 'Brenda Audelo'],
+                datasets: [{
+                    data: [356, 278, 142, 100],
+                    backgroundColor: [
+                        'rgba(52, 152, 219, 0.7)',
+                        'rgba(155, 89, 182, 0.7)',
+                        'rgba(26, 188, 156, 0.7)',
+                        'rgba(241, 196, 15, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(52, 152, 219, 1)',
+                        'rgba(155, 89, 182, 1)',
+                        'rgba(26, 188, 156, 1)',
+                        'rgba(241, 196, 15, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Documentos Registrados por Responsable',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            }
+        });
+        
+        // Gráfico de género de usuarios
+        const generoCtx = document.getElementById('generoChart').getContext('2d');
+        const generoChart = new Chart(generoCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Masculino', 'Femenino', 'Otro', 'Prefiero no decir'],
+                datasets: [{
+                    data: [412, 387, 42, 37],
+                    backgroundColor: [
+                        'rgba(52, 152, 219, 0.7)',
+                        'rgba(231, 76, 60, 0.7)',
+                        'rgba(46, 204, 113, 0.7)',
+                        'rgba(149, 165, 166, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(52, 152, 219, 1)',
+                        'rgba(231, 76, 60, 1)',
+                        'rgba(46, 204, 113, 1)',
+                        'rgba(149, 165, 166, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Distribución por Género de Usuarios',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            }
+        });
+        
+        // Gráfico de preferencias de comunicación
+        const preferenciasCtx = document.getElementById('preferenciasChart').getContext('2d');
+        const preferenciasChart = new Chart(preferenciasCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Correo', 'SMS', 'Notificaciones', 'Correo + SMS', 'Correo + Notif.', 'SMS + Notif.', 'Todas'],
+                datasets: [{
+                    label: 'Preferencias de Comunicación',
+                    data: [256, 187, 142, 98, 115, 76, 87],
+                    backgroundColor: 'rgba(52, 152, 219, 0.7)',
+                    borderColor: 'rgba(52, 152, 219, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Preferencias de Comunicación de Usuarios',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Número de Usuarios'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

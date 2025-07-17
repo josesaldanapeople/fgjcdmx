@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Listado de Trámites</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+	:root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    .badge-pendiente { background-color: #fdfd96; color: #333; }
+    .badge-proceso { background-color: #84b6f4; }
+    .badge-completado { background-color: #77dd77; }
+    .badge-cancelado { background-color: #ff6961; }
+    .table th, .table td { vertical-align: middle; }
+    .pagination { justify-content: center; }
+    .sortable { cursor: pointer; user-select: none; }
+    .input-search-group { max-width: 600px; margin-right: auto; }
+    .btn-nuevo { min-width: 160px; }
+	.header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .header h1 {
+            font-weight: 300;
+            font-size: 1.8rem;
+        }
+  </style>
+</head>
+<body>
+	<div class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1>REGISTRO UNIDAD DE ATENCIÓN INMEDIATA</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+	<div class="container py-4">
+	  <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
+		<div class="input-search-group">
+		  <div class="input-group">
+			<span class="input-group-text"><i class="bi bi-search"></i></span>
+			<input type="text" id="searchInput" class="form-control" placeholder="Buscar en todos los trámites...">
+			<button class="btn btn-primary" id="btnBuscar">Buscar</button>
+		  </div>
+		</div>
+	  </div>
+	  <div class="table-responsive">
+		<table class="table table-bordered align-middle">
+		  <thead>
+			<tr>
+			  <th class="sortable" onclick="sortTable(0)">Número <i class="bi bi-chevron-expand"></i></th>
+			  <th class="sortable" onclick="sortTable(1)">Fecha <i class="bi bi-chevron-expand"></i></th>
+			  <th class="sortable" onclick="sortTable(2)">Folio <i class="bi bi-chevron-expand"></i></th>
+			  <th class="sortable" onclick="sortTable(3)">Quejoso <i class="bi bi-chevron-expand"></i></th>
+			  <th class="sortable" onclick="sortTable(4)">Funcionario <i class="bi bi-chevron-expand"></i></th>
+			  <th class="sortable" onclick="sortTable(5)">Fase <i class="bi bi-chevron-expand"></i></th>
+			  <th class="sortable" onclick="sortTable(6)">Responsable <i class="bi bi-chevron-expand"></i></th>
+			  <th class="sortable" onclick="sortTable(7)">Estatus <i class="bi bi-chevron-expand"></i></th>
+			  <th>Acciones</th>
+			</tr>
+		  </thead>
+		  <tbody id="tableBody"></tbody>
+		</table>
+	  </div>
+	  <nav><ul class="pagination" id="pagination"></ul></nav>
+	</div>
+
+<!-- MODAL DETALLE/EDICIÓN -->
+<div class="modal fade" id="tramiteModal" tabindex="-1" aria-labelledby="tramiteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <form class="modal-content" id="editForm" autocomplete="off" onsubmit="return false;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tramiteModalLabel">Detalle del Trámite</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Se rellena por JS -->
+      </div>
+      <div class="modal-footer" id="modalFooter">
+        <!-- Se rellena por JS -->
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const tramites = [
+  {numero:1, fecha:"15/07/2023", folio:"FOL-2023-001", quejoso:"Juan Pérez López", funcionario:"María González", fase:"Unidad de Atención Inmediata", responsable:"Carlos Sánchez", estatus:"Pendiente"},
+  {numero:2, fecha:"18/07/2023", folio:"FOL-2023-002", quejoso:"Ana Rodríguez Méndez", funcionario:"Luis Fernández", fase:"Investigaciones", responsable:"Laura Martínez", estatus:"En proceso"},
+  {numero:3, fecha:"20/07/2023", folio:"FOL-2023-003", quejoso:"Pedro Gómez Hernández", funcionario:"Ricardo Torres", fase:"Investigaciones", responsable:"Patricia Jiménez", estatus:"Completado"},
+  {numero:4, fecha:"22/07/2023", folio:"FOL-2023-004", quejoso:"Sofía Ramírez García", funcionario:"Jorge Díaz", fase:"Inicial", responsable:"Carlos Sánchez", estatus:"Cancelado"},
+  {numero:5, fecha:"25/07/2023", folio:"FOL-2023-005", quejoso:"Miguel Ángel Cruz", funcionario:"María González", fase:"Investigaciones", responsable:"Laura Martínez", estatus:"En proceso"},
+  {numero:6, fecha:"28/07/2023", folio:"FOL-2023-006", quejoso:"Luis Eduardo Pérez", funcionario:"Luis Fernández", fase:"Unidad de Atención Inmediata", responsable:"Patricia Jiménez", estatus:"Pendiente"},
+  {numero:7, fecha:"30/07/2023", folio:"FOL-2023-007", quejoso:"Sara Díaz López", funcionario:"Ricardo Torres", fase:"Unidad de Atención Inmediata", responsable:"Carlos Sánchez", estatus:"Completado"},
+  {numero:8, fecha:"02/08/2023", folio:"FOL-2023-008", quejoso:"Juan Carlos Romero", funcionario:"Jorge Díaz", fase:"Oficialía de Partes", responsable:"Laura Martínez", estatus:"En proceso"},
+  {numero:9, fecha:"04/08/2023", folio:"FOL-2023-009", quejoso:"Paula Martínez Soto", funcionario:"María González", fase:"Unidad de Atención Inmediata", responsable:"Patricia Jiménez", estatus:"Pendiente"},
+  {numero:10, fecha:"06/08/2023", folio:"FOL-2023-010", quejoso:"Roberto Sánchez", funcionario:"Luis Fernández", fase:"Investigaciones", responsable:"Carlos Sánchez", estatus:"En proceso"},
+  {numero:11, fecha:"08/08/2023", folio:"FOL-2023-011", quejoso:"Laura Martínez", funcionario:"Ricardo Torres", fase:"Finalizada", responsable:"Patricia Jiménez", estatus:"Cancelado"},
+  {numero:12, fecha:"10/08/2023", folio:"FOL-2023-012", quejoso:"Miguel Ángel Cruz", funcionario:"Jorge Díaz", fase:"Unidad de Atención Inmediata", responsable:"Carlos Sánchez", estatus:"Pendiente"},
+  {numero:13, fecha:"12/08/2023", folio:"FOL-2023-013", quejoso:"Ana Rodríguez Méndez", funcionario:"María González", fase:"Unidad de Atención Inmediata", responsable:"Laura Martínez", estatus:"Completado"},
+  {numero:14, fecha:"14/08/2023", folio:"FOL-2023-014", quejoso:"Pedro Gómez Hernández", funcionario:"Luis Fernández", fase:"Investigaciones", responsable:"Patricia Jiménez", estatus:"En proceso"},
+  {numero:15, fecha:"16/08/2023", folio:"FOL-2023-015", quejoso:"Sofía Ramírez García", funcionario:"Ricardo Torres", fase:"Unidad de Atención Inmediata", responsable:"Carlos Sánchez", estatus:"Pendiente"},
+  {numero:16, fecha:"18/08/2023", folio:"FOL-2023-016", quejoso:"Luis Eduardo Pérez", funcionario:"Jorge Díaz", fase:"Inicial", responsable:"Laura Martínez", estatus:"Cancelado"},
+  {numero:17, fecha:"20/08/2023", folio:"FOL-2023-017", quejoso:"Sara Díaz López", funcionario:"María González", fase:"Oficialía de Partes", responsable:"Patricia Jiménez", estatus:"Completado"},
+  {numero:18, fecha:"22/08/2023", folio:"FOL-2023-018", quejoso:"Juan Carlos Romero", funcionario:"Luis Fernández", fase:"Oficialía de Partes", responsable:"Carlos Sánchez", estatus:"En proceso"},
+  {numero:19, fecha:"24/08/2023", folio:"FOL-2023-019", quejoso:"Paula Martínez Soto", funcionario:"Ricardo Torres", fase:"Unidad de Atención Inmediata", responsable:"Patricia Jiménez", estatus:"Pendiente"},
+  {numero:20, fecha:"26/08/2023", folio:"FOL-2023-020", quejoso:"Roberto Sánchez", funcionario:"Jorge Díaz", fase:"Investigaciones", responsable:"Laura Martínez", estatus:"En proceso"},
+  {numero:21, fecha:"28/08/2023", folio:"FOL-2023-021", quejoso:"Laura Martínez", funcionario:"María González", fase:"Unidad de Atención Inmediata", responsable:"Patricia Jiménez", estatus:"Pendiente"},
+  {numero:22, fecha:"30/08/2023", folio:"FOL-2023-022", quejoso:"Miguel Ángel Cruz", funcionario:"Luis Fernández", fase:"Oficialía de Partes", responsable:"Carlos Sánchez", estatus:"En proceso"},
+  {numero:23, fecha:"02/09/2023", folio:"FOL-2023-023", quejoso:"Ana Rodríguez Méndez", funcionario:"Ricardo Torres", fase:"Oficialía de Partes", responsable:"Patricia Jiménez", estatus:"Completado"},
+  {numero:24, fecha:"04/09/2023", folio:"FOL-2023-024", quejoso:"Pedro Gómez Hernández", funcionario:"Jorge Díaz", fase:"Inicial", responsable:"Laura Martínez", estatus:"Cancelado"},
+  {numero:25, fecha:"06/09/2023", folio:"FOL-2023-025", quejoso:"Sofía Ramírez García", funcionario:"María González", fase:"Unidad de Atención Inmediata", responsable:"Patricia Jiménez", estatus:"Pendiente"},
+  {numero:26, fecha:"08/09/2023", folio:"FOL-2023-026", quejoso:"Luis Eduardo Pérez", funcionario:"Luis Fernández", fase:"Investigaciones", responsable:"Carlos Sánchez", estatus:"En proceso"},
+  {numero:27, fecha:"10/09/2023", folio:"FOL-2023-027", quejoso:"Sara Díaz López", funcionario:"Ricardo Torres", fase:"Unidad de Atención Inmediata", responsable:"Patricia Jiménez", estatus:"Pendiente"},
+  {numero:28, fecha:"12/09/2023", folio:"FOL-2023-028", quejoso:"Juan Carlos Romero", funcionario:"Jorge Díaz", fase:"Investigaciones", responsable:"Laura Martínez", estatus:"Completado"},
+  {numero:29, fecha:"14/09/2023", folio:"FOL-2023-029", quejoso:"Paula Martínez Soto", funcionario:"María González", fase:"Oficialía de Partes", responsable:"Patricia Jiménez", estatus:"En proceso"},
+  {numero:30, fecha:"16/09/2023", folio:"FOL-2023-030", quejoso:"Roberto Sánchez", funcionario:"Luis Fernández", fase:"Unidad de Atención Inmediata", responsable:"Carlos Sánchez", estatus:"Pendiente"}
+
+  ];
+const rowsPerPage = 10;
+let currentPage = 1;
+let filteredTramites = [...tramites];
+let sortAsc = true;
+let lastSorted = -1;
+
+function getBadge(estatus) {
+  switch (estatus.toLowerCase()) {
+    case 'pendiente':   return '<span class="badge badge-pendiente">Pendiente</span>';
+    case 'en proceso':  return '<span class="badge badge-proceso">En proceso</span>';
+    case 'completado':  return '<span class="badge badge-completado">Completado</span>';
+    case 'cancelado':   return '<span class="badge badge-cancelado">Cancelado</span>';
+    default: return `<span class="badge bg-secondary">${estatus}</span>`;
+  }
+}
+
+function renderTable(page = 1) {
+  const tableBody = document.getElementById("tableBody");
+  tableBody.innerHTML = "";
+  const start = (page - 1) * rowsPerPage;
+  const end = start + rowsPerPage;
+  const pageRows = filteredTramites.slice(start, end);
+
+  pageRows.forEach((item, idx) => {
+    tableBody.innerHTML += `
+      <tr>
+        <td>${item.numero}</td>
+        <td>${item.fecha}</td>
+        <td>${item.folio}</td>
+        <td>${item.quejoso}</td>
+        <td>${item.funcionario}</td>
+        <td>${item.fase}</td>
+        <td>${item.responsable}</td>
+        <td>${getBadge(item.estatus)}</td>
+        <td>
+          <button class="btn btn-outline-primary btn-sm me-1" title="Editar"
+            onclick="showModal('editar',${start+idx})">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button class="btn btn-outline-info btn-sm" title="Consultar"
+            onclick="showModal('consultar',${start+idx})">
+            <i class="bi bi-eye"></i>
+          </button>
+        </td>
+      </tr>
+    `;
+  });
+  renderPagination();
+}
+
+function renderPagination() {
+  const totalPages = Math.ceil(filteredTramites.length / rowsPerPage);
+  const pagination = document.getElementById("pagination");
+  pagination.innerHTML = "";
+
+  pagination.innerHTML += `
+    <li class="page-item${currentPage === 1 ? ' disabled' : ''}">
+      <a class="page-link" href="#" onclick="changePage(${currentPage - 1});return false;">Anterior</a>
+    </li>
+  `;
+  for(let i = 1; i <= totalPages; i++) {
+    pagination.innerHTML += `
+      <li class="page-item${currentPage === i ? ' active' : ''}">
+        <a class="page-link" href="#" onclick="changePage(${i});return false;">${i}</a>
+      </li>
+    `;
+  }
+  pagination.innerHTML += `
+    <li class="page-item${currentPage === totalPages ? ' disabled' : ''}">
+      <a class="page-link" href="#" onclick="changePage(${currentPage + 1});return false;">Siguiente</a>
+    </li>
+  `;
+}
+
+function changePage(page) {
+  const totalPages = Math.ceil(filteredTramites.length / rowsPerPage);
+  if(page < 1 || page > totalPages) return;
+  currentPage = page;
+  renderTable(currentPage);
+}
+
+document.getElementById("searchInput").addEventListener("input", function() {
+  const filter = this.value.toLowerCase();
+  filteredTramites = tramites.filter(item =>
+    Object.values(item).some(val =>
+      String(val).toLowerCase().includes(filter)
+    )
+  );
+  currentPage = 1;
+  renderTable(currentPage);
+});
+document.getElementById("btnBuscar").addEventListener("click", function() {
+  document.getElementById("searchInput").dispatchEvent(new Event('input'));
+});
+function sortTable(colIndex) {
+  const keys = ["numero","fecha","folio","quejoso","funcionario","fase","responsable","estatus"];
+  const key = keys[colIndex];
+  if(lastSorted === colIndex) sortAsc = !sortAsc;
+  else sortAsc = true;
+  lastSorted = colIndex;
+  filteredTramites.sort((a, b) => {
+    if(a[key] < b[key]) return sortAsc ? -1 : 1;
+    if(a[key] > b[key]) return sortAsc ? 1 : -1;
+    return 0;
+  });
+  currentPage = 1;
+  renderTable(currentPage);
+}
+
+// Modal de Consulta y Edición
+window.showModal = function(tipo, idx) {
+  const tramite = filteredTramites[idx];
+  if(!tramite) return;
+
+  document.getElementById('tramiteModalLabel').innerText = 
+    tipo === 'consultar' ? 'Detalle del Trámite' : 'Editar Trámite';
+
+  let body = '';
+  if(tipo === 'consultar') {
+    body = `
+      <dl class="row mb-0">
+        <dt class="col-sm-4">Número:</dt><dd class="col-sm-8">${tramite.numero}</dd>
+        <dt class="col-sm-4">Fecha:</dt><dd class="col-sm-8">${tramite.fecha}</dd>
+        <dt class="col-sm-4">Folio:</dt><dd class="col-sm-8">${tramite.folio}</dd>
+        <dt class="col-sm-4">Quejoso:</dt><dd class="col-sm-8">${tramite.quejoso}</dd>
+        <dt class="col-sm-4">Funcionario:</dt><dd class="col-sm-8">${tramite.funcionario}</dd>
+        <dt class="col-sm-4">Fase:</dt><dd class="col-sm-8">${tramite.fase}</dd>
+        <dt class="col-sm-4">Responsable:</dt><dd class="col-sm-8">${tramite.responsable}</dd>
+        <dt class="col-sm-4">Estatus:</dt><dd class="col-sm-8">${getBadge(tramite.estatus)}</dd>
+      </dl>
+    `;
+    document.getElementById('modalBody').innerHTML = body;
+    document.getElementById('modalFooter').innerHTML = `
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+    `;
+  } else {
+    body = `
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Número</label>
+          <input type="number" class="form-control" id="editNumero" value="${tramite.numero}" disabled>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Fecha</label>
+          <input type="date" class="form-control" id="editFecha" value="${formatDateInput(tramite.fecha)}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Folio</label>
+          <input type="text" class="form-control" id="editFolio" value="${tramite.folio}">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Quejoso</label>
+          <input type="text" class="form-control" id="editQuejoso" value="${tramite.quejoso}">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Funcionario</label>
+          <input type="text" class="form-control" id="editFuncionario" value="${tramite.funcionario}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Fase</label>
+          <input type="text" class="form-control" id="editFase" value="${tramite.fase}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Responsable</label>
+          <input type="text" class="form-control" id="editResponsable" value="${tramite.responsable}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Estatus</label>
+          <select class="form-select" id="editEstatus">
+            <option${tramite.estatus==='Pendiente'?' selected':''}>Pendiente</option>
+            <option${tramite.estatus==='En proceso'?' selected':''}>En proceso</option>
+            <option${tramite.estatus==='Completado'?' selected':''}>Completado</option>
+            <option${tramite.estatus==='Cancelado'?' selected':''}>Cancelado</option>
+          </select>
+        </div>
+      </div>
+    `;
+    document.getElementById('modalBody').innerHTML = body;
+    document.getElementById('modalFooter').innerHTML = `
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+      <button type="submit" class="btn btn-success" onclick="saveEdit(${tramite.numero})">Guardar</button>
+    `;
+  }
+  const tramiteModal = new bootstrap.Modal(document.getElementById('tramiteModal'));
+  tramiteModal.show();
+};
+
+window.saveEdit = function(numero) {
+  // Busca el trámite por número (que es único)
+  let idx = tramites.findIndex(t => t.numero == numero);
+  if(idx >= 0) {
+    tramites[idx].fecha       = document.getElementById("editFecha").value.split('-').reverse().join('/');
+    tramites[idx].folio       = document.getElementById("editFolio").value;
+    tramites[idx].quejoso     = document.getElementById("editQuejoso").value;
+    tramites[idx].funcionario = document.getElementById("editFuncionario").value;
+    tramites[idx].fase        = document.getElementById("editFase").value;
+    tramites[idx].responsable = document.getElementById("editResponsable").value;
+    tramites[idx].estatus     = document.getElementById("editEstatus").value;
+
+    // Actualiza el filtrado por si hay búsqueda activa
+    filteredTramites = tramites.filter(item =>
+      Object.values(item).some(val =>
+        String(val).toLowerCase().includes(document.getElementById("searchInput").value.toLowerCase())
+      )
+    );
+    renderTable(currentPage);
+    bootstrap.Modal.getInstance(document.getElementById('tramiteModal')).hide();
+  }
+};
+
+function formatDateInput(dateStr) {
+  // Convierte "15/07/2023" a "2023-07-15"
+  if (!dateStr.includes('/')) return dateStr;
+  const [d,m,y] = dateStr.split('/');
+  return `${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;
+}
+
+// Inicializa tabla y paginación
+renderTable(currentPage);
+window.changePage = changePage;
+window.sortTable = sortTable;
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

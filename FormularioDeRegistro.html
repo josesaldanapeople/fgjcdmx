@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuarios</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .header h1 {
+            font-weight: 300;
+            font-size: 1.8rem;
+        }
+        
+        .form-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+        
+        .required-field::after {
+            content: " *";
+            color: var(--accent-color);
+        }
+        
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 4px;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #ddd;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .example-text {
+            font-size: 0.85rem;
+            color: #6c757d;
+            font-style: italic;
+        }
+        
+        .form-section {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: var(--light-bg);
+            border-radius: 6px;
+        }
+        
+        .password-strength {
+            height: 5px;
+            background-color: #e9ecef;
+            margin-top: 5px;
+            border-radius: 3px;
+        }
+        
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+        
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1>REGISTRO DE USUARIOS</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-container">
+            <form id="registroForm">
+                <h2 class="form-title">Datos personales</h2>
+                
+                <!-- Sección 1: Información básica -->
+                <div class="form-section">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="nombre" class="form-label required-field">Nombre(s)</label>
+                            <input type="text" class="form-control" id="nombre" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="apellidos" class="form-label required-field">Apellidos</label>
+                            <input type="text" class="form-control" id="apellidos" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="fechaNacimiento" class="form-label required-field">Fecha de nacimiento</label>
+                            <input type="date" class="form-control" id="fechaNacimiento" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="genero" class="form-label">Género</label>
+                            <select class="form-select" id="genero">
+                                <option value="" selected>Seleccione una opción</option>
+                                <option value="masculino">Masculino</option>
+                                <option value="femenino">Femenino</option>
+                                <option value="otro">Otro</option>
+                                <option value="prefiero-no-decir">Prefiero no decir</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sección 2: Datos de contacto -->
+                <div class="form-section">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="email" class="form-label required-field">Correo electrónico</label>
+                            <input type="email" class="form-control" id="email" required>
+                            <div class="example-text">Ejemplo: usuario@dominio.com</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="telefono" class="form-label">Teléfono</label>
+                            <input type="tel" class="form-control" id="telefono">
+                            <div class="example-text">Ejemplo: 5512345678</div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label for="direccion" class="form-label">Dirección</label>
+                            <textarea class="form-control" id="direccion" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sección 3: Datos de acceso -->
+                <div class="form-section">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="usuario" class="form-label required-field">Nombre de usuario</label>
+                            <input type="text" class="form-control" id="usuario" required>
+                            <div class="example-text">Mínimo 6 caracteres, solo letras y números</div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="contrasena" class="form-label required-field">Contraseña</label>
+                            <input type="password" class="form-control" id="contrasena" required>
+                            <div class="password-strength">
+                                <div class="password-strength-bar" id="passwordStrengthBar"></div>
+                            </div>
+                            <div class="example-text">Mínimo 8 caracteres, incluir mayúsculas, minúsculas y números</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="confirmarContrasena" class="form-label required-field">Confirmar contraseña</label>
+                            <input type="password" class="form-control" id="confirmarContrasena" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sección 4: Preferencias -->
+                <div class="form-section">
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label class="form-label">Preferencias de comunicación</label>
+                            <p><small>Selecciona al menos una opción</small></p>
+                            <div class="radio-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="preferencias" id="prefEmail" value="email">
+                                    <label class="form-check-label" for="prefEmail">Correo electrónico</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="preferencias" id="prefSms" value="sms">
+                                    <label class="form-check-label" for="prefSms">Mensajes SMS</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="preferencias" id="prefNotificaciones" value="notificaciones">
+                                    <label class="form-check-label" for="prefNotificaciones">Notificaciones en la aplicación</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="terminos" required>
+                                <label class="form-check-label required-field" for="terminos">
+                                    Acepto los términos y condiciones del servicio
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <button type="reset" class="btn btn-secondary me-md-2">Limpiar formulario</button>
+                    <button type="submit" class="btn btn-primary">Registrarse</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Validación de fortaleza de contraseña
+        document.getElementById('contrasena').addEventListener('input', function() {
+            const password = this.value;
+            const strengthBar = document.getElementById('passwordStrengthBar');
+            let strength = 0;
+            
+            // Validar longitud mínima
+            if (password.length >= 8) strength += 20;
+            
+            // Validar mayúsculas
+            if (/[A-Z]/.test(password)) strength += 20;
+            
+            // Validar minúsculas
+            if (/[a-z]/.test(password)) strength += 20;
+            
+            // Validar números
+            if (/[0-9]/.test(password)) strength += 20;
+            
+            // Validar caracteres especiales
+            if (/[^A-Za-z0-9]/.test(password)) strength += 20;
+            
+            // Actualizar barra de fortaleza
+            strengthBar.style.width = strength + '%';
+            
+            // Cambiar color según fortaleza
+            if (strength < 40) {
+                strengthBar.style.backgroundColor = '#e74c3c'; // Rojo
+            } else if (strength < 80) {
+                strengthBar.style.backgroundColor = '#f39c12'; // Amarillo
+            } else {
+                strengthBar.style.backgroundColor = '#2ecc71'; // Verde
+            }
+        });
+        
+        // Validación de confirmación de contraseña
+        document.getElementById('confirmarContrasena').addEventListener('input', function() {
+            const password = document.getElementById('contrasena').value;
+            const confirmPassword = this.value;
+            
+            if (password !== confirmPassword) {
+                this.setCustomValidity('Las contraseñas no coinciden');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+        
+        // Validación de términos y condiciones
+        document.getElementById('registroForm').addEventListener('submit', function(e) {
+            if (!document.getElementById('terminos').checked) {
+                e.preventDefault();
+                alert('Debes aceptar los términos y condiciones para continuar');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Ejecutivo</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container-fluid {
+            height: 100vh;
+            padding: 0;
+        }
+        .login-image {
+            background-image: url('images/back_fgj_2.png');
+            background-size: cover;
+            background-position: center;
+            height: 100%;
+            position: relative;
+			margin-left:-5px
+        }
+        .login-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 2rem;
+        }
+        .login-form-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 2rem;
+        }
+        .login-form {
+            width: 100%;
+            max-width: 350px;
+        }
+        .form-control {
+            height: 45px;
+            border-radius: 5px;
+            padding-left: 15px;
+            border: 1px solid #ced4da;
+        }
+        .btn-login {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            border: none;
+            height: 45px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: white;
+            width: 100%;
+        }
+        .btn-login:hover {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+        }
+        .input-group-text {
+            background-color: #e9ecef;
+            border-right: none;
+        }
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #2c3e50;
+        }
+        .company-logo {
+            height: 42%;
+            margin-bottom: 1.5rem;
+        }
+        .welcome-text {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .brand-text {
+            font-size: 1.2rem;
+            font-weight: 300;
+            text-align: center;
+            opacity: 0.9;
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row g-0 h-100">
+            <!-- Sección izquierda (2/3) con imagen de fondo -->
+            <div class="col-md-8 d-none d-md-block">
+                <div class="login-image">
+                    <div class="login-overlay">
+                        
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sección derecha (1/3) con formulario -->
+            <div class="col-md-4">
+                <div class="login-form-container">
+                    <div class="login-form">
+                        <h3 class="mb-4">Iniciar Sesión</h3>
+                        <form id="loginForm">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Usuario</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    <input type="text" class="form-control" id="username" placeholder="Ingrese su usuario" required>
+                                </div>
+                                <div id="usernameError" class="error-message"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Contraseña</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña" required>
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div id="passwordError" class="error-message"></div>
+                            </div>
+                            <button type="submit" class="btn btn-login mt-3">ACCEDER</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle para mostrar/ocultar contraseña
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const password = document.getElementById('password');
+            const icon = this.querySelector('i');
+            if (password.type === 'password') {
+                password.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                password.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        // Manejo del formulario de login
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Limpiar mensajes de error
+            document.getElementById('usernameError').textContent = '';
+            document.getElementById('passwordError').textContent = '';
+            
+            // Obtener valores
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            // Validaciones básicas
+            let isValid = true;
+            
+            if (!username) {
+                document.getElementById('usernameError').textContent = 'El usuario es requerido';
+                isValid = false;
+            }
+            
+            if (!password) {
+                document.getElementById('passwordError').textContent = 'La contraseña es requerida';
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+            
+            // Redirección según el usuario
+            if (username === 'operador1@fjgcdmx.gob.mx') {
+                window.location.href = 'formulario1.html'; // Cambia por tu URL real
+            } else if (username === 'operador2@fjgcdmx.gob.mx') {
+                window.location.href = 'formulario2.html'; // Cambia por tu URL real
+            }else if (username === 'operador3@fjgcdmx.gob.mx') {
+                window.location.href = 'formulario3.html'; // Cambia por tu URL real
+            }else if (username === 'admin@fjgcdmx.gob.mx') {
+                window.location.href = 'dashboard.html'; // Cambia por tu URL real
+            }else if (username === 'superadmin@fjgcdmx.gob.mx') {
+                window.location.href = 'FormularioDeRegistro.html'; // Cambia por tu URL real
+            } else {
+                // Usuario no reconocido
+                document.getElementById('usernameError').textContent = 'Usuario no reconocido';
+            }
+        });
+    </script>
+</body>
+</html>
